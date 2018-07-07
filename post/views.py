@@ -42,7 +42,6 @@ def post_list(request):
     per_page = 10
     post = Post.objects.count()
     pages = ceil(post / per_page)
-
     start = (page - 1) * per_page
     end = start + per_page
     posts = Post.objects.all()[start:end]
