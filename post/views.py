@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from math import ceil
 
 from django.shortcuts import render, redirect
 
@@ -37,8 +38,15 @@ def read_post(request):
 
 
 def post_list(request):
+    page = int(request.GET.get('page',1))
+    per_page = 10
+    post = Post.objects.count()
+    pages = ceil(post / per_page)
 
-    return render(request,'post_list.html',{})
+    start = (page - 1) * per_page
+    end = start + per_page
+    posts = Post.objects.all()[start:end]
+    return render(request,'post_list.html',{'posts':posts, 'pages':range(pages)})
 
 
 def search(request):
