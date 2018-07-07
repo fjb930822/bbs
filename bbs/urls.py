@@ -14,8 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from django.contrib import admin
+# from django.contrib import admin
+from post import views as post_views
+
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^$/', post_views.post_list),
+    url(r'^create_post/',post_views.create_post),
+    url(r'^edit_post/', post_views.edit_post),
+    url(r'^read_post/', post_views.read_post),
+    url(r'^post_list/', post_views.post_list),
+    url(r'^search/', post_views.search),
+
 ]
