@@ -20,10 +20,10 @@ from post import views as post_views
 
 urlpatterns = [
     url(r'^$/', post_views.post_list),
-    url(r'^create_post/',post_views.create_post),
-    url(r'^edit_post/', post_views.edit_post),
-    url(r'^read_post/', post_views.read_post),
-    url(r'^post_list/', post_views.post_list),
-    url(r'^search/', post_views.search),
+    url(r'^post/create/',post_views.create_post),
+    url(r'^post/edit/', post_views.edit_post),
+    url(r'^post/read/', post_views.read_post),
+    url(r'^post/list/', post_views.post_list),
+    url(r'^post/search/', post_views.search),
 
 ]
