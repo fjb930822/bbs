@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from urllib.parse import urlencode
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -36,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.staticfiles',
     'post',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -67,15 +70,34 @@ TEMPLATES = [
 WSGI_APPLICATION = 'bbs.wsgi.application'
 
 
+# Redis 做缓存后端的配置
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PICKLE_VERSION": -1,
+        }
+    }
+}
+
+# Redis 配置
+REDIS = {
+    'host': 'localhost',
+    'port': 6379,
+    'db': 1
+}
+
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
 
 
 # Password validation
@@ -115,3 +137,38 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = 'medias'
+MEDIA_URL = '/medias/'
+
+
+WB_APP_KEY = '3663673442'
+WB_APP_SECRET ='0b8c44a9676eb521198e54b9cc329669'
+
+WB_CALLBACK = 'http://seamile.org/wb/callback/'
+
+# 第一步调用的授权 API
+WB_AUTHORIZE_API = 'https://api.weibo.com/oauth2/authorize'
+WB_AUTHORIZE_API_ARGS = {
+    'client_id': WB_APP_KEY,
+    'redirect_uri': WB_CALLBACK,
+}
+WB_AUTH_URL = '%s?%s' % (WB_AUTHORIZE_API, urlencode(WB_AUTHORIZE_API_ARGS))
+
+
+# 第二步获取 access token 的 API
+WB_ACCESS_TOKEN_API = 'https://api.weibo.com/oauth2/access_token'
+WB_ACCESS_TOKEN_API_ARGS = {
+    'client_id': WB_APP_KEY,
+    'client_secret': WB_APP_SECRET,
+    'grant_type': 'authorization_code',
+    'redirect_uri': WB_CALLBACK,
+    'code': None,
+}
+
+# 第三步获取用户信息
+WB_USER_SHOW_API = 'https://api.weibo.com/2/users/show.json'
+WB_USER_SHOW_API_ARGS = {
+    'access_token': None,
+    'uid': None,
+}
