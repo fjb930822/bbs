@@ -29,6 +29,7 @@ def register(request):
     return render(request,'register.html')
 
 def login(request):
+<<<<<<< HEAD
 
     if request.method =='POST':
         nickname = request.POST.get('nickname')
@@ -37,14 +38,29 @@ def login(request):
             user = User.objects.get(nickname=nickname)
         except User.DoesNotExist:
             return render(request,'login.html',{'error':'用户名不存在','auth_url':settings.WB_AUTH_URL})
+=======
+    if request.method =='POST':
+        nickname = request.POST.get('nickname')
+        password = request.POST.get('password')
+
+        try:
+            user = User.objects.get(nickname=nickname)
+        except User.DoesNotExist:
+            return render(request,'login.html',{'error':'用户名不存在'})
+>>>>>>> 343f19cae863de0f7944cd5a59d1de5cc60fa153
         else:
             if check_password(password, user.password):
                 request.session['uid'] = user.id
                 request.session['nickname'] = user.nickname
                 return redirect('/user/info')
             else:
+<<<<<<< HEAD
                 return render(request,'login.html',{'error':'密码输入不正确','auth_url':settings.WB_AUTH_URL})
     return render(request,'login.html',{'auth_url':settings.WB_AUTH_URL})
+=======
+                return render(request,'login.html',{'error':'密码输入不正确'})
+    return render(request,'login.html')
+>>>>>>> 343f19cae863de0f7944cd5a59d1de5cc60fa153
 
 def logout(request):
     request.session.flush()
@@ -54,6 +70,7 @@ def logout(request):
 def user_info(request):
     uid = request.session.get('uid')
     user = User.objects.get(id=uid)
+<<<<<<< HEAD
     return render(request,'user_info.html',{'user':user})
 
 
@@ -101,3 +118,7 @@ def wb_callback(request):
     request.session['nickname'] = user.nickname
     return redirect('/user/info/')
 
+=======
+
+    return render(request,'user_info.html',{'user':user})
+>>>>>>> 343f19cae863de0f7944cd5a59d1de5cc60fa153
