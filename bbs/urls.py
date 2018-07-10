@@ -33,5 +33,6 @@ urlpatterns = [
     url(r'^user/logout/', user_views.logout),
     url(r'^user/info/', user_views.user_info),
 
+    url(r'wb/callback/', user_views.wb_callback)
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
